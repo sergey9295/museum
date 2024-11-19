@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>О нас</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="{% static 'img/logo.png' %}" alt="Логотип" class="logo">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'floor' 1 %}">Первый этаж</a></li>
+                <li><a href="{% url 'floor' 2 %}">Второй этаж</a></li>
+                <li><a href="{% url 'floor' 3 %}">Третий этаж</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+<main class="main">
+      <h2>Добавить экспозицию</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+    </main>
+</body>
+</html>

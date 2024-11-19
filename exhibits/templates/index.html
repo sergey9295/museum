@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Музейный Комплекс</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="{% static 'img/logo.png' %}" alt="Логотип" class="logo">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'floor' 1 %}">Первый этаж</a></li>
+                <li><a href="{% url 'floor' 2 %}">Второй этаж</a></li>
+                <li><a href="{% url 'floor' 3 %}">Третий этаж</a></li>
+                {% if user.is_authenticated %}
+                <!-- Show "Добавить" when the user is logged in -->
+                <li><a href="{% url 'add_exhibit' %}">Добавить</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+                {% else %}
+                <!-- Show "Войти" when the user is not logged in -->
+                <li><a href="{% url 'login' %}">Войти</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <h1>Добро пожаловать в Музейный Комплекс!</h1>
+        <div class="row">
+            <div class="half" style = "padding-left: 2.2vw;">
+                <p>Здесь оживают истории мировой живописи! Здесь мы собрали уникальные шедевры,
+            отражающие самые яркие эпохи искусства — от Ренессанса до Просвещения. Наш музей посвящен искусству XVI–XVIII
+            веков и предлагает посетителям виртуальные залы с картинами, погружающими в дух времени. Каждое полотно сопровождается
+            подробной информацией, которая поможет лучше понять замысел художника, стилистические особенности и культурные
+            контексты.
+                </p>
+                 <p>Мы приглашаем вас в увлекательное путешествие по страницам истории, полное эстетического удовольствия
+            знаний. Наш сайт создан для всех, кто стремится проникнуться тайнами прошлого и увидеть, как менялись
+            мировоззрения, эстетика и взгляды людей столетия назад. Начните ваше знакомство с коллекцией уже сегодня
+            и окунитесь в неповторимый мир искусства!
+                </p>
+            </div>
+            <div class="half" style = "padding-left: 10vw">
+                <img src="{% static 'img/main.png' %}" alt="Главная" width="800" height="600">
+            </div>
+        </div>
+
+
+        <h2>Доступные экспозиции</h2>
+        <ul>
+            {% for exhibit in exhibits %}
+                <b><a href="{% url 'exhibit_detail' exhibit.id %}" class="no-link-style">{{ exhibit.name }}</a></b>
+                <p>{{ exhibit.description }}</p>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

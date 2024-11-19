@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Этаж {{ floor }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="{% static 'img/logo.png' %}" alt="Логотип" class="logo">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'floor' 1 %}">Первый этаж</a></li>
+                <li><a href="{% url 'floor' 2 %}">Второй этаж</a></li>
+                <li><a href="{% url 'floor' 3 %}">Третий этаж</a></li>
+                {% if user.is_authenticated %}
+                <!-- Show "Добавить" when the user is logged in -->
+                <li><a href="{% url 'add_exhibit' %}">Добавить</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+                {% else %}
+                <!-- Show "Войти" when the user is not logged in -->
+                <li><a href="{% url 'login' %}">Войти</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <h1 style="text-align: center;">Этаж {{ floor }}</h1>
+        <ul>
+            {% for exhibit in exhibits %}
+            <div class="row">
+				<div class="half" style = "padding-left: 9.2vw;">
+					<b><a href="{% url 'exhibit_detail' exhibit.id %}" class="no-link-style">{{ exhibit.name }}</a></b>
+                    <p>{{ exhibit.description }}</p>
+    			</div>
+    			<div class="half" style = "padding-left: 10vw">
+        			 {% with exhibit.items.all|random as random_item %}
+                        {% if random_item %}
+                            <img src="{{ random_item.image.url }}" alt="{{ random_item.name }}" height="400" style="width: auto;">
+                        {% endif %}
+                    {% endwith %}
+    			</div>
+            </div>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

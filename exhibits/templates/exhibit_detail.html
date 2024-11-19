@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ exhibit.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="{% static 'img/logo.png' %}" alt="Логотип" class="logo">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'floor' 1 %}">Первый этаж</a></li>
+                <li><a href="{% url 'floor' 2 %}">Второй этаж</a></li>
+                <li><a href="{% url 'floor' 3 %}">Третий этаж</a></li>
+                {% if user.is_authenticated %}
+                <!-- Show "Добавить" when the user is logged in -->
+                <li><a href="{% url 'edit_exhibit' id=exhibit.id %}">Редактировать</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+                {% else %}
+                <!-- Show "Войти" when the user is not logged in -->
+                <li><a href="{% url 'login' %}">Войти</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="row">
+            <div class="half" style = "padding-left: 9.2vw;">
+                <h1>{{ exhibit.name }}</h1>
+                <p>{{ exhibit.description }}</p>
+            </div>
+            <div class="half" style = "padding-left: 9.2vw;">
+            </div>
+        </div>
+
+
+        <!-- Display each item with name/description on the left and image on the right -->
+        {% for item in exhibit.items.all %}
+            <div class="row">
+				<div class="half" style = "padding-left: 9.2vw;">
+					<h2>{{ item.name }}</h2>
+                    <p>Статус: {{ item.get_status_display }}</p>
+                    <p>{{ item.description }}</p>
+    			</div>
+    			<div class="half" style = "padding-left: 10vw">
+        			 <img src="{{ item.image.url }}" alt="{{ item.name }}">
+    			</div>
+			</div>
+        {% endfor %}
+    </main>
+</body>
+</html>
